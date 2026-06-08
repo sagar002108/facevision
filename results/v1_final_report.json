@@ -1,0 +1,21 @@
+{
+  "model": "YOLOv8n",
+  "weights": "face_detector_v1_best.pt",
+  "mAP50": 0.9188,
+  "Precision": 0.8795,
+  "Recall": 0.8491,
+  "mAP50-95": 0.6273,
+  "webcam_fps": 9.0,
+  "tests": {
+    "single_face": "PASS",
+    "group_face": "PASS - 24 faces",
+    "dog_negative": "FAIL - conf 0.8071 (false positive)",
+    "webcam": "PASS"
+  },
+  "known_issues": [
+    "Dog detected as face at 0.8071 confidence",
+    "All confidence thresholds fail on dog",
+    "Fix: Hard negative mining required for V2",
+    "FPS 9.0 on MX250 - use CPU for better performance"
+  ]
+}

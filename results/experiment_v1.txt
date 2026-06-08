@@ -1,0 +1,75 @@
+Experiment V1
+-------------
+Date: 2026-06-05
+Dataset: WIDER FACE
+Model: YOLOv8n
+
+Preprocessing:
+  Invalid boxes removed    : Yes
+  Minimum face size        : 30px
+  Outside-image boxes removed: Yes
+
+Dataset:
+  Training images : 11,457
+  Training faces  : 40,010
+  Val images      : 2,875
+  Val faces       : 10,430
+
+Training config:
+  epochs : 30
+  imgsz  : 640
+  batch  : 16
+  device : GPU (Colab T4)
+  
+  
+Experiment V1 — RESULTS
+------------------------
+Precision : 0.8795
+Recall    : 0.8491
+mAP50     : 0.9188
+mAP50-95  : 0.6273
+
+Training  : 30 epochs, YOLOv8n, 640px, batch=16
+GPU       : Tesla T4 (Google Colab)
+Status    : ✅ Complete
+
+
+Known Issues V1:
+- Dog face detected as human face at all confidence levels
+- Fix: Hard negative mining required (V2)
+- FPS: 9.0 on MX250, ~20+ on CPU
+
+Dog false positive confidence: 0.8071
+Conclusion: Model requires hard negative mining for V2
+Threshold tuning alone is insufficient
+
+Experiment V2 Plan
+------------------
+Change from V1: Added hard negatives
+Negative sources:
+  - Manual (dogs, cats, transport, cartoon, furniture, monkeys): 163
+  - COCO val2017 no-person images (auto): 1,100
+Total negatives : 1,263
+Negative ratio  : 9.9%
+Hypothesis: Dog false positive (conf 0.8071) will drop significantly
+
+Experiment V2 — RESULTS
+------------------------
+Hypothesis: Adding hard negatives reduces animal false positives
+Result    : CONFIRMED
+
+Dog false positive:
+  V1: conf=0.8071 (detected at ALL thresholds)
+  V2: conf<0.1   (not detected at ANY threshold)
+
+Face detection quality:
+  mAP50 change     : -0.0005 (negligible)
+  Precision change : +0.011  (improved)
+  Recall change    : -0.0017 (negligible)
+
+Conclusion:
+  1,263 negatives (9.9% of dataset) was sufficient
+  to eliminate animal face false positives while
+  preserving human face detection quality.
+
+Status: ✅ V2 Complete — Selected as production model

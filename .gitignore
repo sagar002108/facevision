@@ -1,0 +1,15 @@
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+data/raw/
+data/processed/
+data/negatives/
+dataset.zip
+dataset_v2.zip
+*.zip
+*.cache
+output.jpg
+runs/
+notebooks/03_train.ipynb
+models/face_detector_v1_best.pt
